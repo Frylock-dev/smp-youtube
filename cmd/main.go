@@ -1,17 +1,25 @@
 package main
 
 import (
+	"fmt"
 	"github.com/nats-io/nats.go"
 	log "github.com/sirupsen/logrus"
 	"github.com/syndtr/goleveldb/leveldb"
+	"os"
+	"os/signal"
 	"smp-youtube/config"
 	api "smp-youtube/internal/api/crawler"
 	"smp-youtube/internal/client/bot"
 	"smp-youtube/internal/client/dropbox"
 	repository "smp-youtube/internal/repository/crawler"
 	service "smp-youtube/internal/service/crawler"
+	"syscall"
 
 	uc "github.com/Davincible/chromedp-undetected"
+)
+
+const (
+	version = 0.1
 )
 
 func main() {
@@ -63,9 +71,26 @@ func main() {
 		log.Fatal(err)
 	}
 
+	shutdown := make(chan os.Signal, 1)
+	signal.Notify(shutdown, os.Interrupt, syscall.SIGTERM)
+
+	fmt.Println(`
+░██████╗███╗░░░███╗██████╗░░░░░░░██╗░░░██╗░█████╗░██╗░░░██╗████████╗██╗░░░██╗██████╗░███████╗
+██╔════╝████╗░████║██╔══██╗░░░░░░╚██╗░██╔╝██╔══██╗██║░░░██║╚══██╔══╝██║░░░██║██╔══██╗██╔════╝
+╚█████╗░██╔████╔██║██████╔╝█████╗░╚████╔╝░██║░░██║██║░░░██║░░░██║░░░██║░░░██║██████╦╝█████╗░░
+░╚═══██╗██║╚██╔╝██║██╔═══╝░╚════╝░░╚██╔╝░░██║░░██║██║░░░██║░░░██║░░░██║░░░██║██╔══██╗██╔══╝░░
+██████╔╝██║░╚═╝░██║██║░░░░░░░░░░░░░░██║░░░╚█████╔╝╚██████╔╝░░░██║░░░╚██████╔╝██████╦╝███████╗
+╚═════╝░╚═╝░░░░░╚═╝╚═╝░░░░░░░░░░░░░░╚═╝░░░░╚════╝░░╚═════╝░░░░╚═╝░░░░╚═════╝░╚═════╝░╚══════╝
+
+Started with version`, version)
+
 	select {
 	case <-ctx.Done():
-		log.Error(ctx.Err())
+		log.Errorf("ctx error: %v", ctx.Err())
+		return
+	case <-shutdown:
+		log.Infof("received shutdown signal")
+		cancel()
 		return
 	}
 }

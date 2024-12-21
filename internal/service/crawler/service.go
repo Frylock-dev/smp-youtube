@@ -93,7 +93,7 @@ func (srv *Service) Crawl(ctx context.Context, resources []model.Resource) error
 				title, _ := node.Attribute("title")
 				remotePath := path.Join("youtube", resource.PathToStorage, channel, resource.Type)
 				title = utils.SanitizeFilename(title)
-				videoHash := fmt.Sprintf("%x", md5.Sum([]byte(resource.URL)))
+				videoHash := fmt.Sprintf("%x", md5.Sum([]byte(href)))
 
 				has, err := srv.crawlerRepository.HasURLByHash(ctx, videoHash)
 				if err != nil {
