@@ -1,6 +1,9 @@
 package config
 
-import "github.com/caarlos0/env/v10"
+import (
+	"github.com/caarlos0/env/v10"
+	_ "github.com/joho/godotenv/autoload"
+)
 
 type Config struct {
 	BrowserUserData     string `env:"BROWSER_USER_DATA" envDefault:""`

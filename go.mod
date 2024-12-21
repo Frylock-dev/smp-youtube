@@ -9,6 +9,7 @@ require (
 	github.com/chromedp/chromedp v0.11.2
 	github.com/dropbox/dropbox-sdk-go-unofficial/v6 v6.0.5
 	github.com/go-resty/resty/v2 v2.16.2
+	github.com/joho/godotenv v1.5.1
 	github.com/nats-io/nats.go v1.38.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/syndtr/goleveldb v1.0.0
