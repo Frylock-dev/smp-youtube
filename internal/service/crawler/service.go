@@ -323,7 +323,7 @@ func (srv *Service) SaveNetscapeCookies(ctx context.Context, path string) error 
 			}
 
 			for _, c := range cookies {
-				buffer.WriteString(fmt.Sprintf("%s\t%s\t%s\t%s\t%d\t%s\t%s\n",
+				buffer.WriteString(fmt.Sprintf("%s\t%s\t%s\t%s\t%s\t%s\n",
 					c.Domain,
 					boolToString(c.Domain[0] == '.'),
 					c.Path,
